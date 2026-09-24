@@ -1,0 +1,5 @@
+com\gobimart\repository\ProductRepositoryTest.class
+com\gobimart\service\CartServiceTest.class
+com\gobimart\service\OrderServiceTest.class
+com\gobimart\service\ProductServiceTest.class
+com\gobimart\GobiMartApplicationTests.class

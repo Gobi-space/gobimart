@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle != null ? pageTitle + ' - GOBIMART' : 'Products - GOBIMART'}">Products - GOBIMART</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <div class="container">
+
+        <!-- Flash messages -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+        <!-- Search Results Banner -->
+        <div th:if="${keyword != null}" style="margin-bottom: 1.5rem;">
+            <h2>Search results for: <span style="color: var(--primary-color);" th:text="${keyword}">laptop</span></h2>
+            <a th:href="@{/products}" style="color: var(--gray-500); text-decoration: none; font-size: 0.9rem;">&larr; Clear search</a>
+        </div>
+
+        <!-- Category Filter Chips -->
+        <div class="category-tags">
+            <a th:href="@{/products}"
+               class="category-chip"
+               th:classappend="${currentCategory == null or currentCategory == 'All'} ? 'active' : ''">
+                All Products
+            </a>
+            <a th:each="cat : ${categories}"
+               th:href="@{/categories/{c}(c=${cat})}"
+               th:text="${cat}"
+               class="category-chip"
+               th:classappend="${currentCategory == cat} ? 'active' : ''">
+                Category
+            </a>
+        </div>
+
+        <!-- No Products Found Message -->
+        <div th:if="${#lists.isEmpty(products)}" style="text-align: center; padding: 4rem 1rem; background: #ffffff; border-radius: var(--border-radius); border: 1px solid var(--gray-200);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+            <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">No products found.</h3>
+            <p style="color: var(--gray-500); margin-bottom: 1.5rem;">We couldn't find any products matching your query.</p>
+            <a th:href="@{/products}" class="btn btn-primary">Browse All Products</a>
+        </div>
+
+        <!-- Product Grid -->
+        <div th:unless="${#lists.isEmpty(products)}" class="product-grid">
+            <div th:each="product : ${products}" class="product-card">
+                <div class="product-image-wrap">
+                    <img th:src="${product.imageUrl != null and !product.imageUrl.isEmpty() ? product.imageUrl : 'https://placehold.co/600x400?text=Product'}"
+                         th:alt="${product.name}" />
+                    <span th:if="${product.isOutOfStock()}" class="badge-stock badge-out-of-stock">Out of Stock</span>
+                    <span th:unless="${product.isOutOfStock()}" class="badge-stock badge-in-stock">In Stock (<span th:text="${product.stock}">10</span>)</span>
+                </div>
+
+                <div class="product-body">
+                    <div class="product-category" th:text="${product.category}">Category</div>
+                    <h3 class="product-title">
+                        <a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>
+                    </h3>
+                    <p class="product-desc-short" th:text="${product.description}">Product description.</p>
+
+                    <div class="product-footer">
+                        <div class="product-price">
+                            ₹<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}">0.00</span>
+                        </div>
+
+                        <div class="btn-group">
+                            <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">Details</a>
+                            <form th:action="@{/cart/add}" method="post" style="display: inline;">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit"
+                                        class="btn btn-primary"
+                                        style="padding: 0.4rem 0.75rem; font-size: 0.85rem;"
+                                        th:disabled="${product.isOutOfStock()}">
+                                    Add
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - GOBIMART</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <div class="container">
+        <div style="text-align: center; padding: 5rem 1rem; max-width: 600px; margin: 0 auto;">
+            <div style="font-size: 5rem; font-weight: 900; color: var(--primary-color); line-height: 1;">404</div>
+            <h1 style="font-size: 1.8rem; margin: 1rem 0;">Page or Product Not Found</h1>
+            <p style="color: var(--gray-500); margin-bottom: 2rem;" th:text="${errorMessage != null ? errorMessage : 'The page or product you requested could not be found.'}">
+                The page or product you requested could not be found.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <a th:href="@{/}" class="btn btn-secondary">Go to Home</a>
+                <a th:href="@{/products}" class="btn btn-primary">Browse Catalog</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

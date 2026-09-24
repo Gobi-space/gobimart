@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<header th:fragment="header">
+    <div class="container">
+        <nav class="navbar">
+            <a th:href="@{/}" class="logo">
+                <span>🛒</span> GOBIMART
+            </a>
+
+            <!-- Search Bar -->
+            <div class="nav-search">
+                <form th:action="@{/search}" method="get" class="search-form">
+                    <input type="text"
+                           name="keyword"
+                           class="search-input"
+                           placeholder="Search products, brands and more..."
+                           th:value="${keyword != null ? keyword : ''}"
+                           required />
+                    <button type="submit" class="search-btn">Search</button>
+                </form>
+            </div>
+
+            <button class="mobile-toggle" id="mobileNavToggle" aria-label="Toggle navigation">☰</button>
+
+            <!-- Navigation Links -->
+            <ul class="nav-links" id="navLinks">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/products}">Products</a></li>
+                <li>
+                    <a th:href="@{/cart}">
+                        Cart
+                        <span class="cart-badge"
+                              th:if="${cart != null and cart.totalQuantity > 0}"
+                              th:text="${cart.totalQuantity}">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin}" class="admin-tag">
+                        Admin (Demo)
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+</body>
+</html>
