@@ -90,8 +90,7 @@ mvn spring-boot:run
 
 ### Linux / macOS
 ```bash
-chmod +x mvnw
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 ---
@@ -111,7 +110,32 @@ When connecting to the H2 Web Console, use the following exact settings:
 
 ---
 
-## 7. Project Structure
+## 7. Render Deployment (Docker)
+
+GOBIMART is ready for 1-click or repository-based deployment on **Render** using Docker.
+
+### Automated Setup Features:
+- **Multi-Stage Build**: Compiles with Maven & Temurin JDK 17, runs on lightweight Temurin JRE 17 Alpine (~140MB).
+- **Dynamic Port Binding**: Automatically listens on `${PORT}` passed by Render.
+- **Render Free Tier Optimized**: JVM memory options configured (`-XX:MaxRAMPercentage=75.0 -Xss512k`) to avoid exceeding Render's 512MB RAM limit.
+- **Non-Root Execution**: Runs under a dedicated `appuser` for container security.
+- **Render Blueprint (`render.yaml`)**: Preconfigured for automated Web Service provisioning.
+
+### Deployment Steps on Render:
+1. Push your repository to GitHub / GitLab.
+2. Log into [Render Dashboard](https://dashboard.render.com).
+3. Click **New +** -> **Web Service** (or **Blueprint** to use `render.yaml`).
+4. Connect your repository.
+5. In settings:
+   - **Environment / Runtime**: `Docker`
+   - **Root Directory**: (Leave blank or set to `gobimart` — both are supported)
+   - **Plan**: `Free`
+   - **Health Check Path**: `/`
+6. Click **Deploy Web Service**.
+
+---
+
+## 8. Project Structure
 
 ```text
 gobimart/
@@ -203,7 +227,7 @@ gobimart/
 
 ---
 
-## 8. Database Design
+## 9. Database Design
 
 ```text
   +------------------+         1 : N         +--------------------+         N : 1         +------------------+
@@ -227,7 +251,7 @@ gobimart/
 
 ---
 
-## 9. Future Enhancements
+## 10. Future Enhancements
 
 - User registration, login, and profile history (Spring Security + JWT/session).
 - Integrated payment gateways (Stripe, Razorpay, or PayPal).
@@ -238,6 +262,6 @@ gobimart/
 
 ---
 
-## 10. License & Academic Disclaimer
+## 11. License & Academic Disclaimer
 
 This project is built as an educational demonstration of clean monolithic Spring Boot web architecture for college students and academic evaluations.
